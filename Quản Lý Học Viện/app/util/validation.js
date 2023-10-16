@@ -35,3 +35,32 @@ const kiemTraRong = (value, idErr, message) => {
       return true;
     }
   }
+
+  const kiemTraEmail = (value, idErr, message) => {
+    const re =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  
+    var isEmail = re.test(value);
+    if (isEmail) {
+      document.querySelector(idErr).innerHTML = "";
+      return true;
+    } else {
+      document.querySelector(idErr).innerHTML = message;
+      document.querySelector(idErr).style.display = "block";
+      return false;
+    }
+  }
+
+  const checkNumber = (value, idErr, message) => {
+    const re = /^[0-9]+$/;
+  
+    var isString = re.test(value);
+    if (isString) {
+      document.querySelector(idErr).innerHTML = "";
+      return true;
+    } else {
+      document.querySelector(idErr).style.display = "block";
+      document.querySelector(idErr).innerHTML = message;
+      return false;
+    }
+  }

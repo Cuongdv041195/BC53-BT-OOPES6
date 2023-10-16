@@ -16,8 +16,9 @@ const PersonList = () => {
   promise
     // get data thành công
     .then((result) => {
-      console.log(result.data);
+      // console.log(result.data);
       listPerson = result.data
+      
       renderTable(result.data);
     })
     // get data thất bại
@@ -57,15 +58,6 @@ const renderTable = (personList) => {
                         onclick="deletePerson(${person.id})"
                     >
                         Delete
-                    </button>
-                    <button 
-                        class='btn btn-primary ml-3' 
-                        data-toggle="modal" 
-                        data-target="#detailModal" 
-                        id='btnDetail'
-                        onclick="detailFood(${person.id})"
-                    >
-                        Detail
                     </button>
                 </td>
             </tr>
@@ -173,7 +165,7 @@ getElement("#btnThem").onclick = () => {
 getElement("#btnThemDoiTuong").onclick = () => {
   // Lấy thông tin đối tượng từ user nhập trên form
   const person = layThongTinDoiTuong();
-  console.log("person: ", person);
+  //Kiểm tra mã đối tượng
   let valid = kiemTraRong(
     person.maDT,
     "#invalidID",
@@ -183,22 +175,31 @@ getElement("#btnThemDoiTuong").onclick = () => {
     listPerson,
     "#invalidID",
     "Mã Đối Tượng Đã Tồn Tại"
-  )
+  );
+  // Kiểm Tra Họ Tên
   valid &= kiemTraRong(
     person.hoTen,
     "#invalidTen",
     "Họ Tên Đối Tượng Không Được Để Trống!"
   );
+  // Kiểm Tra Địa Chỉ
   valid &= kiemTraRong(
     person.diaChi,
     "#invalidDiaChi",
     "Địa Chỉ Đối Tượng Không Được Để Trống!"
   );
+  //Kiểm Tra Email
   valid &= kiemTraRong(
     person.email,
     "#invalidEmail",
     "Email Đối Tượng Không Được Để Trống!"
+  )&&
+  kiemTraEmail(
+    person.email,
+    "#invalidEmail",
+    "Sai Định Dạng Email!"
   );
+  // Kiểm tra Lớp Đối Tượng
   valid &= kiemTraDoiTuong(
     person.loaiDT,
     "#invalidLoaiDT",
@@ -209,27 +210,52 @@ getElement("#btnThemDoiTuong").onclick = () => {
       person.diemToan,
       "#invalidDiemToan",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemToan,
+      "#invalidDiemToan",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.diemLy,
       "#invalidDiemLy",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemLy,
+      "#invalidDiemLy",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.diemHoa,
       "#invalidDiemHoa",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemHoa,
+      "#invalidDiemHoa",
+      "Chỉ Nhập Số!"
     );
   } else if ((person.loaiDT === "Employee")) {
     valid &= kiemTraRong(
       person.soNgayLamViec,
       "#invalidGiaSoNgayLamViec",
       "Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.soNgayLamViec,
+      "#invalidGiaSoNgayLamViec",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.luongMotNgay,
       "#invalidLuongMotNgay",
       "Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.luongMotNgay,
+      "#invalidLuongMotNgay",
+      "Chỉ Nhập Số!"
     );
   } else if(person.loaiDT === "Customer"){
     valid &= kiemTraRong(
@@ -266,9 +292,10 @@ getElement("#btnThemDoiTuong").onclick = () => {
         // call API lấy lại danh sách đối tượng mới sau khi thêm thành công
         
         PersonList();
-        resetForm();
+        
         // đóng modal thêm đối tượng
         getElement("#btnClose").click();
+        resetForm();
       })
       .catch((err) => {
         console.log(err);
@@ -330,26 +357,36 @@ getElement("#btnCapNhat").onclick = () => {
 
   // lấy id của đối tượng muốn cập nhật
   const id = getElement("#btnCapNhat").getAttribute("data-id");
+  //Kiểm tra mã đối tượng
   let valid = kiemTraRong(
     person.maDT,
     "#invalidID",
     "Mã Đối Tượng Không Được Để Trống!"
   );
+  // Kiểm Tra Họ Tên
   valid &= kiemTraRong(
     person.hoTen,
     "#invalidTen",
     "Họ Tên Đối Tượng Không Được Để Trống!"
   );
+  // Kiểm Tra Địa Chỉ
   valid &= kiemTraRong(
     person.diaChi,
     "#invalidDiaChi",
     "Địa Chỉ Đối Tượng Không Được Để Trống!"
   );
+  //Kiểm Tra Email
   valid &= kiemTraRong(
     person.email,
     "#invalidEmail",
     "Email Đối Tượng Không Được Để Trống!"
+  )&&
+  kiemTraEmail(
+    person.email,
+    "#invalidEmail",
+    "Sai Định Dạng Email!"
   );
+  // Kiểm tra Lớp Đối Tượng
   valid &= kiemTraDoiTuong(
     person.loaiDT,
     "#invalidLoaiDT",
@@ -360,27 +397,52 @@ getElement("#btnCapNhat").onclick = () => {
       person.diemToan,
       "#invalidDiemToan",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemToan,
+      "#invalidDiemToan",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.diemLy,
       "#invalidDiemLy",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemLy,
+      "#invalidDiemLy",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.diemHoa,
       "#invalidDiemHoa",
       "Điểm Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.diemHoa,
+      "#invalidDiemHoa",
+      "Chỉ Nhập Số!"
     );
   } else if ((person.loaiDT === "Employee")) {
     valid &= kiemTraRong(
       person.soNgayLamViec,
       "#invalidGiaSoNgayLamViec",
       "Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.soNgayLamViec,
+      "#invalidGiaSoNgayLamViec",
+      "Chỉ Nhập Số!"
     );
     valid &= kiemTraRong(
       person.luongMotNgay,
       "#invalidLuongMotNgay",
       "Không Được Để Trống!"
+    )&&
+    checkNumber(
+      person.luongMotNgay,
+      "#invalidLuongMotNgay",
+      "Chỉ Nhập Số!"
     );
   } else if(person.loaiDT === "Customer"){
     valid &= kiemTraRong(
@@ -406,7 +468,7 @@ const promise = axios({
     url: `https://65113dfe829fa0248e3fb9c1.mockapi.io/QLHV/${id}`,
     data: {
       ...person,
-
+      
     },
   });
 
