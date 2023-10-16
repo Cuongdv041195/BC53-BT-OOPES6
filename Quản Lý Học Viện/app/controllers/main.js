@@ -18,7 +18,7 @@ const PersonList = () => {
     .then((result) => {
       // console.log(result.data);
       listPerson = result.data
-      
+      console.log('listPerson: ', listPerson);
       renderTable(result.data);
     })
     // get data thất bại
@@ -337,7 +337,21 @@ window.editPerson = (id) => {
     getElement("#diaChi").value = person.diaChi;
     getElement("#email").value = person.email;
     getElement("#occupation").value = person.loaiDT;
-    getElement("#occupation").disabled = false;
+    getElement("#occupation").disabled = true;
+    if(person.loaiDT === "Student"){
+      getElement("#studentDetails").style.display = "block"
+      getElement("#employeeDetails").style.display = "none"
+      getElement("#customerDetails").style.display = "none"
+    }else if(person.loaiDT === "Employee"){
+      getElement("#studentDetails").style.display = "none"
+      getElement("#employeeDetails").style.display = "block"
+      getElement("#customerDetails").style.display = "none"
+    }else if(person.loaiDT === "Customer"){
+      getElement("#studentDetails").style.display = "none"
+      getElement("#employeeDetails").style.display = "none"
+      getElement("#customerDetails").style.display = "block"
+    }
+    
     getElement("#diemToan").value = person.diemToan;
     getElement("#diemLy").value = person.diemLy;
     getElement("#diemHoa").value = person.diemHoa;
