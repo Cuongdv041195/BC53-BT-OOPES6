@@ -8,7 +8,7 @@ class Student extends Person {
       this.diemHoa = diemHoa;
     }
     tinhDiemTrungBinh = () => {
-      return Number((this.diemToan + this.diemLy + this.diemHoa) / 3);
+      return Number(+this.diemToan + +this.diemLy + +this.diemHoa) / 3;
     }  
   }
 export default Student

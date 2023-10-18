@@ -24,7 +24,7 @@ const kiemTraRong = (value, idErr, message) => {
     let viTri = listPerson.findIndex(function (nv) {
       return nv.maDT == id;
     });
-    console.log("vị trí", viTri);
+    // console.log("vị trí", viTri);
   
     if (viTri != -1) {
       document.querySelector(idErr).innerHTML = message;
